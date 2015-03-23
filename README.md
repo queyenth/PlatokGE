@@ -1,5 +1,5 @@
-# SimpleEngline
-SimpleEngine - game engine written on C++  
+# PlatokGE
+PlatokGE - game engine written on C++  
 This engine not for real game development, it's just for understanding how to make game from A-Z  
 You can see current progress on [trello board](https://trello.com/b/NnFOsmLA/platokge)
 ## Dependencies
