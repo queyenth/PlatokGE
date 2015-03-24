@@ -7,11 +7,11 @@ class Shader;
 class ShaderProgram {
 public:
   ShaderProgram();
-  ShaderProgram(Shader &vertexShader, Shader &fragmentShader);
+  ShaderProgram(Shader vertexShader, Shader fragmentShader);
 
   ~ShaderProgram();
 
-  void Link(Shader &vertexShader, Shader &fragmentShader);
+  void Link(Shader vertexShader, Shader fragmentShader);
 
   inline operator GLuint() const {
     return program;
