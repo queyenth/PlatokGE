@@ -168,7 +168,6 @@ void DrawAnimation(Screen &screen) {
 
     screen.SwitchBuffers();
     screen.ProcessEvents();
-    Sleep(16);
   }
 }
 
@@ -277,7 +276,6 @@ void DrawPhysicsStaff(Screen &screen) {
     
     screen.SwitchBuffers();
     screen.ProcessEvents();
-    Sleep(16);
   }
   world.DestroyBody(groundBody);
   world.DestroyBody(body);
@@ -287,6 +285,7 @@ int main() {
   Screen screen(WIDTH, HEIGHT, "PlatOK Software");
   Input &input = screen.GetInput();
 
+  printf("Here a segment fault\n");
   Texture texture;
   if (!texture.LoadFromFile("img/spritesheet.png"))
     exit(1);
@@ -327,7 +326,6 @@ int main() {
     //background.Draw(backgroundTexture, Projection, View);
     screen.SwitchBuffers();
     screen.ProcessEvents();
-    Sleep(15);
   }
   return 0;
 }
