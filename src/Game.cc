@@ -285,7 +285,6 @@ int main() {
   Screen screen(WIDTH, HEIGHT, "PlatOK Software");
   Input &input = screen.GetInput();
 
-  printf("Here a segment fault\n");
   Texture texture;
   if (!texture.LoadFromFile("img/spritesheet.png"))
     exit(1);
