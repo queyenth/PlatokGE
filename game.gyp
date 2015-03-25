@@ -126,7 +126,7 @@
           'libraries': [
             '-lopengl32.lib',
             '-lglu32.lib',
-            '-lSOIL/lib/SOIL.lib',
+            '-lSOIL/lib/soil2.lib',
             '-lGLFW/lib/glfw3.lib',
             '-lglew/lib/Release/Win32/glew32.lib',
             '-lBox2D/lib/Box2D_debug.lib',
