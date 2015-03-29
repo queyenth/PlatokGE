@@ -21,6 +21,7 @@ public:
   void Draw(const Texture &texture, const glm::mat4 &Projection, const glm::mat4 &View) ;
 
   void GenVertexBuffers();
+  void GenElementBuffers();
   float GetX() const;
   float GetY() const;
   float GetWidth() const;
@@ -43,6 +44,8 @@ public:
   bool IsFlippedX() const;
   bool IsFlippedY() const;
 
+  virtual void GenAll();
+
   void CopyLocation(Renderable *);
 
 protected:
@@ -57,11 +60,14 @@ protected:
   float height;
   float angle;
 
-  GLfloat vertex_buffer[18];
+  std::vector<glm::vec3> vertex_buffer;
   GLuint vertexbuffer;
 
-  GLfloat normal_buffer[18];
+  std::vector<glm::vec3> normal_buffer;
   GLuint normalbuffer;
+
+  std::vector<unsigned short> element_buffer;
+  GLuint elementbuffer;
   
   const ShaderProgram* program;
   glm::mat4 matrix;
