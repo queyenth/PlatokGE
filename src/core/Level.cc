@@ -11,8 +11,7 @@ void Level::GenLevel(const Texture &texture, const ShaderProgram &program) {
   for (int i = 0; i < 32; i++) {
     entities.push_back(new Entity(EntityType::GROUND, AnimationType::IDLE, i*32.0f, HEIGHT - 32.0f, 32.0f, 32.0f, program, false));
     entities[i]->GetCurrentAnimation()->AddFrame(texture, Rect(0, 101, 32, 132));
-    entities[i]->GetCurrentAnimation()->GenVertexBuffers();
-    entities[i]->GetCurrentAnimation()->GenUVBuffers();
+    entities[i]->GetCurrentAnimation()->GenAll();
   }
 }
 

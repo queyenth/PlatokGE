@@ -31,9 +31,8 @@ void DrawLogo(Screen &screen) {
   float x = (screen.GetWidth() - logoTexture.GetWidth()) / 2;
   float y = (screen.GetHeight() - logoTexture.GetHeight()) / 2;
   Sprite logo(x, y, logoTexture.GetWidth(), logoTexture.GetHeight(), program, true);
-  logo.GenVertexBuffers();
   logo.SetTexture(logoTexture);
-  logo.GenUVBuffers();
+  logo.GenAll();
   screen.SetClearColor(se::Color(1.0f, 1.0f, 1.0f));
   
   GLuint alphaID = glGetUniformLocation(program, "alphaChannel");
@@ -90,8 +89,7 @@ void DrawAnimation(Screen &screen) {
   }
   Sprite background(0, 0, WIDTH, HEIGHT, program, true);
   background.SetTexture(backText);
-  background.GenVertexBuffers();
-  background.GenUVBuffers();
+  background.GenAll();
 
   Level level;
   level.GenLevel(texture, program);
@@ -196,8 +194,7 @@ void DrawPhysicsStaff(Screen &screen) {
   Texture groundTexture = Texture("img/back_pattern.png");
   Sprite groundSprite = Sprite(0.0f, HEIGHT+10.0f*50.0f, 50.0f*50.0f, 10.0f*50.0f, program, false);
   groundSprite.SetTexture(groundTexture);
-  groundSprite.GenVertexBuffers();
-  groundSprite.GenUVBuffers();
+  groundSprite.GenAll();
 
   b2BodyDef bodyDef;
   bodyDef.type = b2_dynamicBody;
@@ -218,8 +215,7 @@ void DrawPhysicsStaff(Screen &screen) {
 
   Sprite bodySprite = Sprite(0.0f, HEIGHT - 10.0f*50.0f, 50.0f, 50.0f, program, false);
   bodySprite.SetTexture(groundTexture);
-  bodySprite.GenVertexBuffers();
-  bodySprite.GenUVBuffers();
+  bodySprite.GenAll();
 
   glUseProgram(program);
   GLuint LightID = glGetUniformLocation(program, "LightPosition_worldspace");
@@ -305,24 +301,24 @@ int main() {
     glm::vec3(0, 1, 0)
   );
 
-  /*Texture backgroundTexture;
+  Texture backgroundTexture;
   backgroundTexture.LoadFromFile("img/back.png");
   if (!backgroundTexture) {
     exit(-1);
   }
-  Sprite background(0, 0, screen.GetWidth(), screen.GetHeight(), se::Color(), program, true);
+  Sprite background(0.0f, 0.0f, screen.GetWidth(), screen.GetHeight(), program, true);
   background.GenVertexBuffers();
   background.SetTexture(backgroundTexture);
-  background.GenUVBuffers();*/
+  background.GenUVBuffers();
+  background.GenElementBuffers();
 
   DrawLogo(screen);
   DrawAnimation(screen);
-  //DrawPhysicsStaff(screen);
-  return 0;
+  DrawPhysicsStaff(screen);
 
   while (screen.IsOpened()) {
     screen.Clear();
-    //background.Draw(backgroundTexture, Projection, View);
+    background.Draw(backgroundTexture, Projection, View);
     screen.SwitchBuffers();
     screen.ProcessEvents();
   }
