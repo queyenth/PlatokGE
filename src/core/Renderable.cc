@@ -33,6 +33,9 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
 
   glm::mat4 MVP = Projection * View * matrix;
 
+  if (beforeRenderFunc)
+    beforeRenderFunc();
+
   glUseProgram(*program);
 
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
@@ -153,12 +156,9 @@ void Renderable::GenVertexBuffers() {
 }
 
 void Renderable::GenElementBuffers() {
-  element_buffer.push_back(0);
-  element_buffer.push_back(1);
-  element_buffer.push_back(2);
-  element_buffer.push_back(2);
-  element_buffer.push_back(3);
-  element_buffer.push_back(1);
+  short int ar[] = {0, 1, 2, 2, 3, 1};
+  for (int i = 0; i < 6; i++)
+    element_buffer.push_back(ar[i]);
   if (glIsBuffer(elementbuffer))
     glDeleteBuffers(1, &elementbuffer);
   glGenBuffers(1, &elementbuffer);
@@ -218,4 +218,8 @@ void Renderable::CopyLocation(Renderable *other) {
 void Renderable::GenAll() {
   GenVertexBuffers();
   GenElementBuffers();
+}
+
+void Renderable::BeforeRender(std::function<void()> fun) {
+  beforeRenderFunc = fun;
 }

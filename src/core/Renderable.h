@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 
 #include <GL/glew.h>
 #include <glm.hpp>
@@ -37,6 +38,7 @@ public:
   void SetFixedMode(bool isFixed);
   void SetAngle(float angle);
   void SetShaderProgram(const ShaderProgram &program);
+  void BeforeRender(std::function<void()>);
   void Move(float offsetX, float offsetY);
   void Rotate(float newAngle);
   void FlipX(bool isFlip);
@@ -70,6 +72,7 @@ protected:
   GLuint elementbuffer;
   
   const ShaderProgram* program;
+  std::function<void()> beforeRenderFunc;
   glm::mat4 matrix;
   bool positionChanged;
   bool isFixed;
