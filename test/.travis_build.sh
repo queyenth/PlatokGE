@@ -1,8 +1,10 @@
+#!/bin/sh
+
 echo "Compiling unit tests..."
-clang++ Main.cc -std=c++11 -lgtest -lpthread -o unit_test
+gyp --check --depth=. -f make --toplevel-dir=. && make
 echo "Running unit tests..."
-./unit_test
+./out/Default/test
 result=$?
-rm -r unit_test
+rm -rf out
 echo "Unit tests completed : $result"
 exit $result

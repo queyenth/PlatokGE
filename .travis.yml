@@ -3,8 +3,9 @@ compiler:
   - clang
 before_install:
   - sudo apt-get update
-  - sudo apt-get install libgtest-dev
+  - sudo apt-get install gyp libgtest-dev
   - "cd /usr/src/gtest && sudo cmake . && sudo cmake --build . && sudo mv libg* /usr/local/lib ; cd -"
+  - sudo apt-get install libglew-dev libglfw3-dev libbox2d-dev libglm-dev
 before_script:
   - pwd
   - which sh
