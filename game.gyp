@@ -1,4 +1,8 @@
 {
+  'make_global_settings': [
+    ['CXX', '/usr/bin/clang++'],
+    ['LINK', '/usr/bin/clang++'],
+  ],
   'target_defaults': {
     'default_configuration': 'Debug',
     'configurations': {

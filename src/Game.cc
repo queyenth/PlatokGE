@@ -13,10 +13,13 @@
 
 void DrawLogo(Screen &screen) {
   Texture logoTexture;
+  Shader *vertShader = new Shader("LogoShader.vert", GL_VERTEX_SHADER);
+  Shader *fragShader = new Shader("LogoShader.frag", GL_FRAGMENT_SHADER);
   ShaderProgram program = ShaderProgram(
-    Shader("LogoShader.vert", GL_VERTEX_SHADER),
-    Shader("LogoShader.frag", GL_FRAGMENT_SHADER)
+    *vertShader, *fragShader
   );
+  delete vertShader;
+  delete fragShader;
   Input input = screen.GetInput();
   double startTime = glfwGetTime();
 
@@ -34,7 +37,7 @@ void DrawLogo(Screen &screen) {
   logo.SetTexture(logoTexture);
   logo.GenAll();
   screen.SetClearColor(se::Color(1.0f, 1.0f, 1.0f));
-  
+
   GLuint alphaID = glGetUniformLocation(program, "alphaChannel");
 
   GLfloat alpha = 0.0f;
@@ -43,7 +46,7 @@ void DrawLogo(Screen &screen) {
 
   while (glfwGetTime() - startTime < 2 && screen.IsOpened() && !input.IsKeyPressed(GLFW_KEY_ESCAPE)) {
     screen.Clear();
-    
+
     if (glfwGetTime() - currentTime >= 0.05) {
       alpha += 0.025f;
       currentTime = glfwGetTime();
@@ -60,21 +63,15 @@ void DrawLogo(Screen &screen) {
 void DrawAnimation(Screen &screen) {
   Texture texture;
   Input input = screen.GetInput();
+  Shader *vertShader = new Shader("PointLightShader.vert", GL_VERTEX_SHADER);
+  Shader *fragShader = new Shader("PointLightShader.frag", GL_FRAGMENT_SHADER);
   ShaderProgram program0 = ShaderProgram(
-    Shader("PointLightShader.vert", GL_VERTEX_SHADER),
-    Shader("PointLightShader.frag", GL_FRAGMENT_SHADER)
+    *vertShader, *fragShader
   );
-  ShaderProgram program1 = ShaderProgram(
-    Shader("BasicLightShader.vert", GL_VERTEX_SHADER),
-    Shader("BasicLightShader.frag", GL_FRAGMENT_SHADER)
-  );
-  ShaderProgram program2 = ShaderProgram(
-    Shader("DirectionalLight.vert", GL_VERTEX_SHADER),
-    Shader("DirectionalLight.frag", GL_FRAGMENT_SHADER)
-  );
+  delete vertShader;
+  delete fragShader;
 
   ShaderProgram program = program0;
-  double startTime = glfwGetTime();
 
   texture.LoadFromFile("img/spritesheet.png");
   if (!texture.IsValid()) {
@@ -108,9 +105,6 @@ void DrawAnimation(Screen &screen) {
 
   glm::vec3 lightPos = glm::vec3(WIDTH/2, HEIGHT/2, -50);
   glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &View.GetMatrix()[0][0]);
-  
-  bool leftDir = false;
-  bool rightDir = false;
 
   while (!input.IsKeyPressed(GLFW_KEY_ESCAPE) && screen.IsOpened()) {
 
@@ -172,19 +166,22 @@ void DrawAnimation(Screen &screen) {
 void DrawPhysicsStaff(Screen &screen) {
   Input input = screen.GetInput();
 
+  Shader *vertShader = new Shader("PointLightShader.vert", GL_VERTEX_SHADER);
+  Shader *fragShader = new Shader("PointLightShader.frag", GL_FRAGMENT_SHADER);
   ShaderProgram program = ShaderProgram(
-    Shader("PointLightShader.vert", GL_VERTEX_SHADER),
-    Shader("PointLightShader.frag", GL_FRAGMENT_SHADER)
+    *vertShader, *fragShader
   );
+  delete vertShader;
+  delete fragShader;
   glm::mat4 Projection = glm::ortho(0.0f, WIDTH, HEIGHT, 0.0f, 0.1f, 100.f);
   Camera View = Camera();
-  
+
   b2Vec2 gravity(0.0f, -10.0f);
   b2World world(gravity);
 
   b2BodyDef groundBodyDef;
   groundBodyDef.position.Set(0.0f, -10.0f);
-  
+
   b2Body* groundBody = world.CreateBody(&groundBodyDef);
 
   b2PolygonShape groundBox;
@@ -269,7 +266,7 @@ void DrawPhysicsStaff(Screen &screen) {
 
     glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &bodySprite.GetModelMatrix()[0][0]);
     bodySprite.Draw(groundTexture, Projection, View);
-    
+
     screen.SwitchBuffers();
     screen.ProcessEvents();
   }
@@ -285,9 +282,10 @@ int main() {
   if (!texture.LoadFromFile("img/spritesheet.png"))
     exit(1);
 
+  Shader *vertShader = new Shader("VertexShader.vert", GL_VERTEX_SHADER);
+  Shader *fragShader = new Shader("FragmentShader.frag", GL_FRAGMENT_SHADER);
   ShaderProgram program = ShaderProgram(
-    Shader("VertexShader.vert", GL_VERTEX_SHADER),
-    Shader("FragmentShader.frag", GL_FRAGMENT_SHADER)
+    *vertShader, *fragShader
   );
 
   GLuint VertexArrayID;
@@ -313,7 +311,7 @@ int main() {
   background.GenElementBuffers();
 
   DrawLogo(screen);
-  DrawAnimation(screen);
+  //DrawAnimation(screen);
   DrawPhysicsStaff(screen);
 
   while (screen.IsOpened()) {
