@@ -2,7 +2,7 @@ language: cpp
 compiler:
   - clang
 before_install:
-  - sudo add-apt-repository ppa:pyglfw/pyglfw
+  - sudo add-apt-repository -y ppa:pyglfw/pyglfw
   - sudo apt-get update -qq
   - sudo apt-get install -y gyp libgtest-dev
   - sudo apt-get install -y xorg xserver-xorg-video-dummy
