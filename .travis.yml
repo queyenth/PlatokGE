@@ -2,10 +2,14 @@ language: cpp
 compiler:
   - clang
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install gyp libgtest-dev
+  - sudo add-apt-repository ppa:pyglfw/pyglfw
+  - sudo apt-get update -qq
+  - sudo apt-get install -y gyp libgtest-dev
+  - sudo apt-get install -y xorg xserver-xorg-video-dummy
+  - wget http://www.eecs.berkeley.edu/~pullin/travis/xorg.conf
+  - Xorg -noreset -logfile ./10.log -config ./xorg.conf :10 &
   - "cd /usr/src/gtest && sudo cmake . && sudo cmake --build . && sudo mv libg* /usr/local/lib ; cd -"
-  - sudo apt-get install libglew-dev libglfw3-dev libbox2d-dev libglm-dev
+  - sudo apt-get install -y libglew-dev glfw3 libbox2d-dev libglm-dev
 before_script:
   - pwd
   - which sh
