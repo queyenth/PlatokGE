@@ -39,11 +39,14 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
   glUseProgram(*program);
 
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+  
+  GLuint vertexPosition_modelspaceID = glGetAttribLocation(*program, "vertexPosition_modelspace");
+  GLuint vertexNormal_modelspaceID = glGetAttribLocation(*program, "vertexNormal_modelspace");
 
-  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(vertexPosition_modelspaceID);
   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
   glVertexAttribPointer(
-    0,
+    vertexPosition_modelspaceID,
     3,
     GL_FLOAT,
     GL_FALSE,
@@ -51,10 +54,10 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
     (void *)0
   );
 
-  glEnableVertexAttribArray(2);
+  glEnableVertexAttribArray(vertexNormal_modelspaceID);
   glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
   glVertexAttribPointer(
-    2,
+    vertexNormal_modelspaceID,
     3,
     GL_FLOAT,
     GL_FALSE,
@@ -73,8 +76,8 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
     (void*)0
   );
 
-  glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(2);
+  glDisableVertexAttribArray(vertexPosition_modelspaceID);
+  glDisableVertexAttribArray(vertexNormal_modelspaceID);
   RenderClean();
 }
 

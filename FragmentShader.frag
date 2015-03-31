@@ -1,11 +1,9 @@
-#version 330 core
+#version 120
 
-in vec2 UV;
-
-out vec4 color;
+varying vec2 UV;
 
 uniform sampler2D myTextureSampler;
 
 void main() {
-	color = texture2D(myTextureSampler, UV).rgba;
+	gl_FragColor = texture2D(myTextureSampler, UV).rgba;
 }

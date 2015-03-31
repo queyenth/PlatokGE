@@ -1,14 +1,12 @@
-#version 330 core
+#version 120
 
-in vec2 UV;
-
-out vec4 color;
+varying vec2 UV;
 
 uniform sampler2D myTextureSampler;
 uniform float alphaChannel;
 
 void main() {
 	float a = alphaChannel;
-	color =
+	gl_FragColor =
 	texture2D(myTextureSampler, UV) * vec4(1, 1, 1, a);
 }

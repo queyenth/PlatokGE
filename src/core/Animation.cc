@@ -35,10 +35,12 @@ void Animation::Render(const Texture &texture) {
     flipped = false;
   }
 
-  glEnableVertexAttribArray(1);
+  GLuint textureUV = glGetAttribLocation(*program, "vertexUV");
+
+  glEnableVertexAttribArray(textureUV);
   glBindBuffer(GL_ARRAY_BUFFER, uvbuffer[currentFrame]);
   glVertexAttribPointer(
-    1,
+    textureUV,
     2,
     GL_FLOAT,
     GL_FALSE,
@@ -59,8 +61,8 @@ void Animation::Render(const Texture &texture) {
 }
 
 void Animation::RenderClean() {
-  glDisableVertexAttribArray(1);
-  glDisableVertexAttribArray(2);
+  GLuint textureUV = glGetAttribLocation(*program, "vertexUV");
+  glDisableVertexAttribArray(textureUV);
 }
 
 int Animation::GetCurrentFrame() const {
