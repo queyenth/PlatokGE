@@ -10,7 +10,7 @@ before_install:
   - Xorg -noreset -logfile ./10.log -config ./xorg.conf :10 &
   - cd /usr/src/gtest && sudo cmake . && sudo cmake --build . && sudo mv libg* /usr/local/lib ; cd -
   - git clone https://github.com/glfw/glfw
-  - cd glfw && mkdir build && cd build && cmake .. -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && make && make install
+  - cd glfw && mkdir build && cd build && cmake .. -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && make && sudo make install
   - hg clone https://bitbucket.org/SpartanJ/soil2
   - cd soil2 && premake4 gmake && cd make/linux && make -f soil2-static-lib.make config=release && sudo cp -rv ../../src/SOIL2/ /usr/local/include && sudo cp ../../lib/linux/libsoil2.a /usr/local/lib && cd ../../../
   - sudo mv /usr/lib/libbox2d.so /usr/lib/libBox2D.so
