@@ -1,99 +1,8 @@
 {
-  'make_global_settings': [
-    ['CXX', '/usr/bin/clang++'],
-    ['LINK', '/usr/bin/clang++'],
-  ],
-  'target_defaults': {
-    'default_configuration': 'Debug',
-    'configurations': {
-      'Debug': {
-        'defines': ['WIN32', '_DEBUG', '_CONSOLE', 'UNICODE', '_UNICODE'],
-        'msvs_settings': {
-          'VCCLCompilerTool': {
-            'BufferSecurityCheck': 'true',
-            'WarningLevel': 3,
-            'TreatWChar_tAsBuiltInType': 'true',
-            'DebugInformationFormat': 4,
-            'MinimalRebuild': 'true',
-            'Optimization': 0,
-            'FloatingPointModel': 0,
-            'ErrorReporting': 1,
-            'WarnAsError': 'false',
-            'EnablePREfast': 'false',
-            'ForceConformanceInForLoopScope': 'true',
-            'BasicRuntimeChecks': 3,
-            'CallingConvention': 0,
-            'OmitFramePointers': 'false',
-            'ExceptionHandling': 1,
-            'SuppressStartupBanner': 'true',
-            'RuntimeLibrary': 3,
-          },
-          'VCLinkerTool': {
-            'DataExecutionPrevention': 2,
-            'TargetMachine': 1,
-            'ImageHasSafeExceptionHandlers': 'false',
-            'LinkIncremental': 2,
-            'SubSystem': 1,
-            'EnableUAC': 'true',
-            'UACExecutionLevel': 0,
-            'UACUIAccess': 'false',
-            'RandomizedBaseAddress': 2,
-            'ErrorReporting': 1,
-            'SuppressStartupBanner': 'true',
-            'GenerateDebugInformation': 'true',
-            'TypeLibraryResourceID': 1,
-          }
-        },
-      },
-      'Release': {
-        'defines': ['WIN32', 'NDEBUG', '_WINDOWS', 'UNICODE', '_UNICODE'],
-        'msvs_settings': {
-          'VCCLCompilerTool': {
-            'BufferSecurityCheck': 'true',
-            'WholeProgramOptimization': 'true',
-            'WarningLevel': 5,
-            'EnableFunctionLevelLinking': 'true',
-            'TreatWChar_tAsBuiltInType': 'true',
-            'DebugInformationFormat': 3,
-            'MinimalRebuild': 'false',
-            'Optimization': 2,
-            'FloatingPointModel': 0,
-            'ErrorReporting': 1,
-            'WarnAsError': 'false',
-            'EnablePREfast': 'false',
-            'ForceConformanceInForLoopScope': 'true',
-            'BasicRuntimeChecks': 3,
-            'CallingConvention': 0,
-            'OmitFramePointers': 'false',
-            'EnableIntrinsicFunctions': 'true',
-            'ExceptionHandling': 1,
-            'SuppressStartupBanner': 'true',
-            'RuntimeLibrary': 2,
-          },
-          'VCLinkerTool': {
-            'LinkTimeCodeGeneration': 1,
-            'DataExecutionPrevention': 2,
-            'TargetMachine': 1,
-            'ImageHasSafeExceptionHandlers': 'true',
-            'LinkIncremental': 1,
-            'SubSystem': 2,
-            'EnableUAC': 'true',
-            'UACExecutionLevel': 0,
-            'UACUIAccess': 'false',
-            'RandomizedBaseAddress': 2,
-            'ErrorReporting': 1,
-            'SuppressStartupBanner': 'true',
-            'GenerateDebugInformation': 'true',
-            'TypeLibraryResourceID': 1,
-          }
-        },
-      },
-    },
-  },
   'targets': [
     {
-      'target_name': 'game',
-      'type': 'executable',
+      'target_name': 'engine',
+      'type': 'static_library',
       'msvs_guid': '0875EF34-7D6F-49D8-AA45-DA5093B57E8B',
       'dependencies': [],
       'defines': [],
@@ -113,7 +22,6 @@
         'src/core/ShaderProgram.cc',
         'src/core/Sprite.cc',
         'src/core/Texture.cc',
-        'src/Game.cc',
       ],
       'conditions': [
         ['OS=="win"', {
@@ -167,7 +75,34 @@
             '-lBox2D',
           ],
         }],
-      ]
-    }
-  ]
+      ],
+    },
+    {
+      'target_name': 'game',
+      'type': 'executable',
+      'dependencies': [
+        "engine",
+      ],
+      'defines': [],
+      'sources': [
+        'src/Game.cc',
+      ],
+      'cflags': [
+        '-std=c++11',
+        '-Wall',
+        '-g',
+      ],
+      'include_dirs': [
+        '/usr/include/glm',
+      ],
+      'libraries': [
+        '-lGL',
+        '-lGLU',
+        '-lsoil2',
+        '-lglfw',
+        '-lGLEW',
+        '-lBox2D',
+      ],
+    },
+  ],
 }
