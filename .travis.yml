@@ -19,10 +19,7 @@ before_install:
 before_script:
   - pwd
   - which sh
-script: "env DISPLAY=:9 && cd test && sh ./.travis_build.sh"
-after_script:
-  - "xpra stop :9"
-  - "cat ~/.xpra/*"
+script: "cd test && sh ./.travis_build.sh""
 branches:
   only:
     - develop
