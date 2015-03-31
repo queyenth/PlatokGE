@@ -1,9 +1,9 @@
-#version 330 core
+#version 120
 
-layout(location = 0) in vec3 vertexPosition_modelspace;
-layout(location = 1) in vec2 vertexUV;
+attribute vec3 vertexPosition_modelspace;
+attribute vec2 vertexUV;
 
-out vec2 UV;
+varying vec2 UV;
 
 uniform mat4 MVP;
 

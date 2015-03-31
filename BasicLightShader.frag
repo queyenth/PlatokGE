@@ -1,12 +1,10 @@
-#version 330 core
+#version 120
 
-in vec2 UV;
-in vec3 Position_worldspace;
-in vec3 Normal_cameraspace;
-in vec3 EyeDirection_cameraspace;
-in vec3 LightDirection_cameraspace;
-
-out vec4 color;
+varying vec2 UV;
+varying vec3 Position_worldspace;
+varying vec3 Normal_cameraspace;
+varying vec3 EyeDirection_cameraspace;
+varying vec3 LightDirection_cameraspace;
 
 uniform sampler2D myTextureSampler;
 uniform mat4 MV;
@@ -30,7 +28,7 @@ void main() {
 	vec3 R = reflect(-l, n);
 	float cosAlpha = dot(E, R);
 
-	color = MaterialAmbientColor +
+	gl_FragColor = MaterialAmbientColor +
 	MaterialDiffuseColor * LightColor * LightPower * cosTheta/* / (distance*distance)*/ +
 	MaterialSpecularColor * LightColor * LightPower * pow(max(cosAlpha, 0), 5) * clamp(cosTheta, 0, 1)/* / (distance*distance)*/;
 	/*

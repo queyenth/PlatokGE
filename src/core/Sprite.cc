@@ -31,10 +31,12 @@ void Sprite::Render(const Texture &texture) {
   texture.BindTexture();
   glUniform1i(TextureID, 0);
 
-  glEnableVertexAttribArray(1);
+  GLuint textureUV = glGetAttribLocation(*program, "vertexUV");
+
+  glEnableVertexAttribArray(textureUV);
   glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
   glVertexAttribPointer(
-    1,
+    textureUV,
     2,
     GL_FLOAT,
     GL_FALSE,
@@ -45,8 +47,8 @@ void Sprite::Render(const Texture &texture) {
 }
 
 void Sprite::RenderClean() {
-  glDisableVertexAttribArray(1);
-  glDisableVertexAttribArray(2);
+  GLuint textureUV = glGetAttribLocation(*program, "vertexUV");
+  glDisableVertexAttribArray(textureUV);
 }
 
 void Sprite::GenUVBuffers() {
