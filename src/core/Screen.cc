@@ -21,6 +21,7 @@ Screen::Screen(int width, int height, string name, bool fullscreen) {
 
 void Screen::CreateUserWindow() {
   if (!glfwInit()) {
+    glfwSetErrorCallback([](int err, const char *errmsg) {fprintf(stderr, "%s", errmsg);});
     fprintf(stderr, "Failed to initialize GLFW\n");
     exit(-1);
   }
