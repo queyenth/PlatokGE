@@ -14,6 +14,7 @@ before_install:
   - sudo cp src/libgl* /usr/local/lib ; sudo cp -rv ../include/GLFW /usr/local/include ; cd ../../
   - hg clone https://bitbucket.org/SpartanJ/soil2
   - cd soil2 && premake4 gmake && cd make/linux && make -f soil2-static-lib.make config=release && sudo cp -rv ../../src/SOIL2/ /usr/local/include && sudo cp ../../lib/linux/libsoil2.a /usr/local/lib && cd ../../../
+  - sudo mv /usr/lib/libbox2d.so /usr/lib/libBox2D.so
 before_script:
   - pwd
   - which sh
