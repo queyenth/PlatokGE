@@ -2,7 +2,7 @@ language: cpp
 compiler:
   - clang
 env:
-  - PATH=$PATH:/usr/local/lib
+  - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 before_install:
   - sudo add-apt-repository -y ppa:kalakris/cmake
   - sudo add-apt-repository -y ppa:codegear/release
@@ -16,7 +16,6 @@ before_install:
   - hg clone https://bitbucket.org/SpartanJ/soil2
   - cd soil2 && premake4 gmake && cd make/linux && make -f soil2-static-lib.make config=release && sudo cp -rv ../../src/SOIL2/ /usr/local/include && sudo cp ../../lib/linux/libsoil2.a /usr/local/lib && cd ../../../
   - sudo mv /usr/lib/libbox2d.so /usr/lib/libBox2D.so
-  - sudo cp /usr/local/lib/libg* test/
 before_script:
   - pwd
   - which sh
