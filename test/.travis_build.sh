@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Compiling unit tests..."
-gyp --check --depth=. -f make --toplevel-dir=. && make
+gyp --check --depth=. -f make --toplevel-dir=. -DTRAVIS_BUILD=ON && make
 echo "Running unit tests..."
 ./out/Default/test
 result=$?
