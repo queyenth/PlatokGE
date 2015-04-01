@@ -28,9 +28,9 @@ before_script:
   - which sh
 script: "cd $TRAVIS_BUILD_DIR/test && sh ./.travis_build.sh"
 after_success:
-  - "cd $TRAVIS_BUILD_DIR/test"
-  - "mv out/Default/obj.target/src/core/*.* ."
-  - "coveralls --gcov /usr/bin/gcov-4.8 --exclude out"
+  - "mv $TRAVIS_BUILD_DIR/test/out/Default/obj.target/src/core/*.* $TRAVIS_BUILD_DIR/src/core"
+  - "cd $TRAVIS_BUILD_DIR/src/core"
+  - "coveralls --gcov /usr/bin/gcov-4.8"
 branches:
   only:
     - develop
