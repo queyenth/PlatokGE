@@ -28,7 +28,7 @@ before_script:
   - which sh
 script: "cd $TRAVIS_BUILD_DIR/test && sh ./.travis_build.sh"
 after_success:
-  - "if [ $CXX = 'g++-4.8' ]; then mv $TRAVIS_BUILD_DIR/test/out/Default/obj.target/src/core/*.* $TRAVIS_BUILD_DIR/test; mv $TRAVIS_BUILD_DIR/src/core/*.* $TRAVIS_BUILD_DIR/test; cd $TRAVIS_BUILD_DIR/test; coveralls --gcov /usr/bin/gcov-4.8; fi"
+  - "mv $TRAVIS_BUILD_DIR/test/out/Default/obj.target/src/core/*.* $TRAVIS_BUILD_DIR/test; mv $TRAVIS_BUILD_DIR/src/core/*.* $TRAVIS_BUILD_DIR/test; cd $TRAVIS_BUILD_DIR/test; coveralls --gcov /usr/bin/gcov-4.8 -e out"
 branches:
   only:
     - develop
