@@ -30,7 +30,7 @@ script: "cd $TRAVIS_BUILD_DIR/test && sh ./.travis_build.sh"
 after_success:
   - "cd $TRAVIS_BUILD_DIR/test"
   - "mv out/Default/obj.target/src/core/*.* ."
-  - "coveralls --gcov /usr/bin/gcov-4.8 --exclude out > /dev/null 2>/dev/stdout|grep -v 'gcno:version'|grep -v 'gcda:version'"
+  - "coveralls --gcov /usr/bin/gcov-4.8 --exclude out"
 branches:
   only:
     - develop
