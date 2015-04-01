@@ -27,6 +27,16 @@
         '-lBox2D',
         '-lgtest',
       ],
+      'conditions': [
+        ['TRAVIS_BUILD=="ON"', {
+          'cflags+': [
+            '--coverage',
+          ],
+          'libraries+': [
+            '--coverage',
+          ],
+        }],
+      ]
     }
   ]
 }

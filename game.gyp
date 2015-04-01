@@ -75,6 +75,14 @@
             '-lBox2D',
           ],
         }],
+        ['TRAVIS_BUILD=="ON"', {
+          'cflags+': [
+            '--coverage',
+          ],
+          'libraries+': [
+            '--coverage',
+          ],
+        }],
       ],
     },
     {
