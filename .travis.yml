@@ -32,3 +32,5 @@ after_success:
 branches:
   only:
     - develop
+notifications:
+  webhooks: http://travisnotificator-queyenth.rhcloud.com/
