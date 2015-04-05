@@ -33,4 +33,4 @@ branches:
   only:
     - develop
 notifications:
-  webhooks: http://travisnotificator-queyenth.rhcloud.com/
+  webhooks: http://travisnotificator-queyenth.rhcloud.com/?ids=283030161
