@@ -19,78 +19,28 @@ enum AnimationType {
 
 class Entity {
 public:
-  Entity() {
-    currentAnimation = nullptr;
-  }
-  Entity(EntityType type) {
-    this->type = type;
-    currentAnimation = nullptr;
-  }
-  Entity(EntityType etype, AnimationType atype, float x, float y, float width, float height, const ShaderProgram& program, bool isFixed) {
-    animations.insert(std::pair<AnimationType, Animation *>(atype, new Animation(x, y, width, height, program, isFixed)));
-    currentAnimation = animations[atype];
-    currentAnimationType = atype;
-    type = etype;
-  }
-  virtual ~Entity() {
-    for (auto i : animations)
-      delete i.second;
-  }
+  Entity();
+  Entity(EntityType type);
+  Entity(EntityType etype, AnimationType atype, float x, float y, float width, float height, const ShaderProgram& program, bool isFixed);
+  virtual ~Entity();
 
-  Animation *GetCurrentAnimation() {
-    return currentAnimation;
-  }
+  Animation *GetCurrentAnimation();
 
-  AnimationType GetCurrentAnimationType() {
-    return currentAnimationType;
-  }
+  AnimationType GetCurrentAnimationType();
 
-  Animation *AddAnimation(AnimationType type, float x, float y, float width, float height, const ShaderProgram& program, bool isFixed) {
-    animations.insert(std::pair<AnimationType, Animation *>(type, new Animation(x, y, width, height, program, isFixed)));
-    currentAnimation = animations[type];
-    currentAnimationType = type;
-    return currentAnimation;
-  }
+  Animation *AddAnimation(AnimationType type, float x, float y, float width, float height, const ShaderProgram& program, bool isFixed);
 
-  Animation *SetAnimation(AnimationType type) {
-    if (currentAnimation != nullptr)
-      animations[type]->CopyLocation(currentAnimation);
-    currentAnimation = animations[type];
-    currentAnimationType = type;
-    return currentAnimation;
-    /*for (auto i : animations) {
-      if (i.first == type) {
-        if (currentAnimation != nullptr)
-          i.second->CopyLocation(currentAnimation);
-        currentAnimation = i.second;
-        currentAnimationType = type;
-        return currentAnimation;
-      }
-    }*/
-  }
+  Animation *SetAnimation(AnimationType type);
 
-  Animation *GetAnimation(AnimationType type) {
-    return animations[type];
-    /*for (auto i : animations)
-      if (i.first == type)
-        return i.second;*/
-  }
+  Animation *GetAnimation(AnimationType type);
 
-  void SetEntityType(EntityType type) {
-    this->type = type;
-  }
+  void SetEntityType(EntityType type);
 
-  inline void Draw(const Texture &texture, const glm::mat4 &projection, const glm::mat4 &view) {
-    currentAnimation->Draw(texture, projection, view);
-  }
+  void Draw(const Texture &texture, const glm::mat4 &projection, const glm::mat4 &view);
 
-  inline operator EntityType() {
-    return type;
-  }
+  operator EntityType();
 
-  inline EntityType GetEntityType() {
-    return type;
-  }
+  EntityType GetEntityType();
 
 protected:
   std::map<AnimationType, Animation *> animations;

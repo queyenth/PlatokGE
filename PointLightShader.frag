@@ -1,9 +1,7 @@
-#version 330 core
+#version 120
 
-in vec2 UV;
-in vec3 Position_worldspace;
-
-out vec4 color;
+varying vec2 UV;
+varying vec3 Position_worldspace;
 
 uniform sampler2D myTextureSampler;
 uniform mat4 MV;
@@ -17,6 +15,6 @@ void main() {
 	float Kl = 1;
 	float distance = length(LightPosition_worldspace - Position_worldspace);
 
-	color = texture2D(myTextureSampler, UV).rgba +
+	gl_FragColor = texture2D(myTextureSampler, UV).rgba +
 	        (LightColor * LightPower)/(Kc+Kl*distance);
 }

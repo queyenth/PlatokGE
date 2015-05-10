@@ -21,14 +21,14 @@ Screen::Screen(int width, int height, string name, bool fullscreen) {
 
 void Screen::CreateUserWindow() {
   if (!glfwInit()) {
+    glfwSetErrorCallback([](int err, const char *errmsg) {fprintf(stderr, "%s", errmsg);});
     fprintf(stderr, "Failed to initialize GLFW\n");
     exit(-1);
   }
 
   glfwWindowHint(GLFW_SAMPLES, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
   window = glfwCreateWindow(width, height, nameOfWindow.c_str(), NULL, NULL);
   if (window == NULL) {
@@ -38,7 +38,6 @@ void Screen::CreateUserWindow() {
   }
   glfwMakeContextCurrent(window);
 
-  glewExperimental = true;
   if (glewInit() != GLEW_OK) {
     fprintf(stderr, "Failed to initialize GLEW\n");
     exit(-1);
@@ -57,6 +56,8 @@ void Screen::ProcessEvents() {
 }
 
 void Screen::ResizeWindow(int width, int height) {
+  this->width = width;
+  this->height = height;
   glViewport(0, 0, width, height);
 }
 

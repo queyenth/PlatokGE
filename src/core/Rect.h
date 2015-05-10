@@ -1,27 +1,15 @@
 #pragma once
 
-#include "Texture.h"
+class Texture;
 
 class Rect {
 public:
   
-  Rect() {
-    left = top = right = bottom = 0.0f;
-  }
+  Rect();
   
-  Rect(float left, float top, float right, float bottom) {
-    this->left = left;
-    this->right = right;
-    this->top = top;
-    this->bottom = bottom;
-  }
+  Rect(float left, float top, float right, float bottom);
 
-  Rect(const Texture &texture) {
-    this->left = 0;
-    this->right = (float)texture.GetWidth();
-    this->top = 0;
-    this->bottom = (float)texture.GetHeight();
-  }
+  Rect(const Texture &texture);
 
   float left;
   float top;

@@ -33,14 +33,20 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
 
   glm::mat4 MVP = Projection * View * matrix;
 
+  if (beforeRenderFunc)
+    beforeRenderFunc();
+
   glUseProgram(*program);
 
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+  
+  GLuint vertexPosition_modelspaceID = glGetAttribLocation(*program, "vertexPosition_modelspace");
+  GLuint vertexNormal_modelspaceID = glGetAttribLocation(*program, "vertexNormal_modelspace");
 
-  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(vertexPosition_modelspaceID);
   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
   glVertexAttribPointer(
-    0,
+    vertexPosition_modelspaceID,
     3,
     GL_FLOAT,
     GL_FALSE,
@@ -48,10 +54,10 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
     (void *)0
   );
 
-  glEnableVertexAttribArray(2);
+  glEnableVertexAttribArray(vertexNormal_modelspaceID);
   glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
   glVertexAttribPointer(
-    2,
+    vertexNormal_modelspaceID,
     3,
     GL_FLOAT,
     GL_FALSE,
@@ -61,9 +67,17 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
 
   Render(texture);
 
-  glDrawArrays(GL_TRIANGLES, 0, 2 * 3);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
-  glDisableVertexAttribArray(0);
+  glDrawElements(
+    GL_TRIANGLES,
+    element_buffer.size(),
+    GL_UNSIGNED_SHORT,
+    (void*)0
+  );
+
+  glDisableVertexAttribArray(vertexPosition_modelspaceID);
+  glDisableVertexAttribArray(vertexNormal_modelspaceID);
   RenderClean();
 }
 
@@ -118,70 +132,44 @@ void Renderable::SetHeight(float height) {
 }
 
 void Renderable::GenVertexBuffers() {
-  /*
-  * Should generate normals too
-  * Our renderable object is two triangles,
-  * v1(-(width/2), -(height/2))
-  * v2(width/2, -(height/2))
-  * v3(-(width/2), height/2)
-  * v4(width/2, height/2)
-  * t1(v1, v2, v4) and t2(v4, v3, v1)
-  * T1edge1 = T1v1 - T1v2
-  * T1edge2 = T1v3 - T1v1
-  * T1normal = cross(T1edge1, T1edge2).normalize()
-  * T2edge1 = T2v1 - T2v2
-  * T2edge2 = T2v3 - T2v1
-  * T2normal = cross(T2edge1, T2edge2).normalize()
-  * v1.normal = normalize(T1normal + T2normal)
-  * v4.normal = normalize(T1normal + T2normal)
-  */
+  glm::vec3 v[4];
+  v[0] = glm::vec3(-(width / 2), -(height / 2), 0.0f);
+  v[1] = glm::vec3(width / 2, -(height / 2), 0.0f);
+  v[2] = glm::vec3(-(width / 2), height / 2, 0.0f);
+  v[3] = glm::vec3(width / 2, height / 2, 0.0f);
 
-  glm::vec3 v1(-(width / 2), -(height / 2), 0.0f);
-  glm::vec3 v2(width / 2, -(height / 2), 0.0f);
-  glm::vec3 v3(-(width / 2), height / 2, 0.0f);
-  glm::vec3 v4(width / 2, height / 2, 0.0f);
+  for (auto i = 0; i < 4; i++)
+    vertex_buffer.push_back(v[i]);
 
-  glm::vec3 T1edge1 = v1 - v2;
-  glm::vec3 T1edge2 = v4 - v1;
-  glm::vec3 T2edge1 = v4 - v3;
-  glm::vec3 T2edge2 = v1 - v4;
-
-  glm::vec3 T1normal = glm::normalize(glm::cross(T1edge1, T1edge2));
-  glm::vec3 T2normal = glm::normalize(glm::cross(T2edge1, T2edge2));
-
-  glm::vec3 v1normal = glm::normalize(T1normal + T2normal);
-  glm::vec3 v2normal = glm::normalize(T1normal + T2normal);
-  glm::vec3 v3normal = glm::normalize(T1normal + T2normal);
-  glm::vec3 v4normal = glm::normalize(T1normal + T2normal);
-
-  normal_buffer[0] = normal_buffer[12] = normal_buffer[15] = T1normal.x;
-  normal_buffer[1] = normal_buffer[4] = normal_buffer[16] = T1normal.y;
-  normal_buffer[3] = normal_buffer[6] = normal_buffer[9] = T2normal.x;
-  normal_buffer[7] = normal_buffer[10] = normal_buffer[13] = T2normal.y;
-  normal_buffer[2] = normal_buffer[5]
-    = normal_buffer[8] = normal_buffer[11]
-    = normal_buffer[14] = normal_buffer[17] = T1normal.z;
+  glm::vec3 v1normal = glm::normalize(glm::cross(v[1]-v[0], v[2]-v[0]));
+  for (auto i = 0; i < 4; i++)
+    normal_buffer.push_back(v1normal);
 
   if (glIsBuffer(normalbuffer))
     glDeleteBuffers(1, &normalbuffer);
   glGenBuffers(1, &normalbuffer);
   glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(normal_buffer), normal_buffer, GL_STATIC_DRAW);
-
-  vertex_buffer[0] = vertex_buffer[12] = vertex_buffer[15] = -(width/2);
-  vertex_buffer[1] = vertex_buffer[4] = vertex_buffer[16] = -(height/2);
-  vertex_buffer[3] = vertex_buffer[6] = vertex_buffer[9] = width/2;
-  vertex_buffer[7] = vertex_buffer[10] = vertex_buffer[13] = height/2;
-  vertex_buffer[2] = vertex_buffer[5]
-    = vertex_buffer[8] = vertex_buffer[11]
-    = vertex_buffer[14] = vertex_buffer[17] = 0.0f;
+  glBufferData(GL_ARRAY_BUFFER, normal_buffer.size()*sizeof(glm::vec3), &normal_buffer[0], GL_STATIC_DRAW);
 
   if (glIsBuffer(vertexbuffer))
     glDeleteBuffers(1, &vertexbuffer);
   glGenBuffers(1, &vertexbuffer);
   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer), vertex_buffer, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertex_buffer.size()*sizeof(glm::vec3), &vertex_buffer[0], GL_STATIC_DRAW);
 }
+
+void Renderable::GenElementBuffers() {
+  short int ar[] = {0, 1, 2, 2, 3, 1};
+  for (int i = 0; i < 6; i++)
+    element_buffer.push_back(ar[i]);
+  if (glIsBuffer(elementbuffer))
+    glDeleteBuffers(1, &elementbuffer);
+  glGenBuffers(1, &elementbuffer);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, element_buffer.size() * sizeof(unsigned short), &element_buffer[0], GL_STATIC_DRAW);
+}
+
+
 
 void Renderable::SetFixedMode(bool isFixed) {
   this->isFixed = isFixed;
@@ -228,4 +216,13 @@ void Renderable::CopyLocation(Renderable *other) {
   this->x = other->x;
   this->y = other->y;
   positionChanged = true;
+}
+
+void Renderable::GenAll() {
+  GenVertexBuffers();
+  GenElementBuffers();
+}
+
+void Renderable::BeforeRender(std::function<void()> fun) {
+  beforeRenderFunc = fun;
 }

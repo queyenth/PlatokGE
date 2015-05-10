@@ -16,6 +16,27 @@ public:
   virtual ~Sprite();
   
   void GenUVBuffers();
+  virtual void GenAll() override;
+  void SetTexture(const Texture &texture, Rect textureRect);
+  void SetTexture(const Texture &texture);
+
+private:
+  virtual void Render(const Texture &texture) override;
+  virtual void RenderClean() override;
+  Rect textureRect;
+
+  std::vector<glm::vec2> uv_buffer;
+  GLuint uvbuffer;
+};
+
+/*class PhysicsSprite : public Renderable {
+public:
+  PhysicsSprite();
+  PhysicsSprite(float x, float y, float width, float height, const ShaderProgram& program, bool isFixed);
+  
+  virtual ~PhysicsSprite();
+  
+  void GenUVBuffers();
   void SetTexture(const Texture &texture, Rect textureRect);
   void SetTexture(const Texture &texture);
 
@@ -26,4 +47,4 @@ private:
 
   GLfloat uv_buffer[12];
   GLuint uvbuffer;
-};
+};*/

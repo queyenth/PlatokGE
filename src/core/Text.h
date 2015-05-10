@@ -4,7 +4,6 @@
 #include "Texture.h"
 #include "Color.h"
 
-#include <Windows.h>
 #include <gl/GL.h>
 
 class Text {

@@ -1,8 +1,7 @@
 #pragma once
 #include <string>
-#include <Windows.h>
-#include <gl/GL.h>
-#include <SOIL.h>
+#include <GL/glew.h>
+#include <SOIL2/SOIL2.h>
 
 class Texture {
 public:

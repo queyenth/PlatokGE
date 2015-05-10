@@ -15,6 +15,7 @@ public:
   void SetSpeed(double speed);
   void SetCurrentFrame(int currentFrame);
   void GenUVBuffers();
+  virtual void GenAll() override;
   void AddFrame(const Texture &texture);
   void AddFrame(const Texture &texture, Rect textureRect);
 
@@ -23,7 +24,7 @@ private:
   virtual void RenderClean() override;
 
   std::vector<Rect> textureRects;
-  std::vector<std::vector<GLfloat> > uv_buffers;
+  std::vector<std::vector<glm::vec2> > uv_buffers;
   std::vector<GLuint> uvbuffer;
 
   double speed;
