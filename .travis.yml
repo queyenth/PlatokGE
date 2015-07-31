@@ -5,23 +5,23 @@ compiler:
 env:
   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 before_install:
-  - wget http://www.cmake.org/files/v3.3/cmake-3.3.0.tar.gz
-  - tar -xzvf cmake-3.3.0.tar.gz
-  - cd cmake-3.3.0 && ./bootstrap && make && sudo make install
   - sudo add-apt-repository -y ppa:codegear/release
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
   - sudo apt-get install -y gyp libgtest-dev xpra xserver-xorg-video-dummy libglew-dev libbox2d-dev libglm-dev xorg-dev libglu1-mesa-dev premake4 xvfb g++-5
   - alias gcc='gcc-5'
   - alias g++='g++-5'
-  - "if [ $CC = 'gcc' ]; then export CC='gcc-4.8' && export CXX='g++-4.8'; fi"
+  - "if [ $CC = 'gcc' ]; then export CC='gcc-5' && export CXX='g++-5'; fi"
   - "if [ $CC = 'clang' ]; then export CXX=clang++; fi"
+  - wget http://www.cmake.org/files/v3.3/cmake-3.3.0.tar.gz
+  - tar -xzvf cmake-3.3.0.tar.gz
+  - cd cmake-3.3.0 && ./bootstrap > /dev/null && make > /dev/null && sudo make install > /dev/null
   - sudo pip install cpp-coveralls
-  - cd /usr/src/gtest && sudo cmake . && sudo cmake --build . && sudo mv libg* /usr/local/lib ; cd -
+  - cd /usr/src/gtest && sudo cmake . > /dev/null && sudo cmake --build . > /dev/null && sudo mv libg* /usr/local/lib ; cd -
   - git clone https://github.com/glfw/glfw
-  - cd glfw && mkdir build && cd build && cmake .. -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && make && sudo make install && cd ../../
+  - cd glfw && mkdir build && cd build && cmake .. -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON > /dev/null && make > /dev/null && sudo make install && cd ../../
   - hg clone https://bitbucket.org/SpartanJ/soil2
-  - cd soil2 && premake4 gmake && cd make/linux && make -f soil2-static-lib.make config=release && sudo cp -rv ../../src/SOIL2/ /usr/local/include && sudo cp ../../lib/linux/libsoil2.a /usr/local/lib && cd ../../../
+  - cd soil2 && premake4 gmake && cd make/linux && make -f soil2-static-lib.make config=release > /dev/null && sudo cp -rv ../../src/SOIL2/ /usr/local/include && sudo cp ../../lib/linux/libsoil2.a /usr/local/lib && cd ../../../
   - sudo mv /usr/lib/libbox2d.so /usr/lib/libBox2D.so
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -35,4 +35,4 @@ branches:
   only:
     - develop
 notifications:
-  webhooks: http://travisnotificator-queyenth.rhcloud.com/?ids=283030161
+  webhooks: http://travisnotificator-queyenth.rhcloud.com/?ids=268252821
