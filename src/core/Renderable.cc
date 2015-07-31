@@ -39,7 +39,7 @@ void Renderable::Draw(const Texture &texture, const glm::mat4 &Projection, const
   glUseProgram(*program);
 
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-  
+
   GLuint vertexPosition_modelspaceID = glGetAttribLocation(*program, "vertexPosition_modelspace");
   GLuint vertexNormal_modelspaceID = glGetAttribLocation(*program, "vertexNormal_modelspace");
 
