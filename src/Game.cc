@@ -1,7 +1,9 @@
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <Box2D/Box2D.h>
+
+#include <iostream>
 
 #include "core/Screen.h"
 #include "core/Sprite.h"
@@ -279,8 +281,10 @@ int main() {
   Input &input = screen.GetInput();
 
   Texture texture;
-  if (!texture.LoadFromFile("img/spritesheet.png"))
+  if (!texture.LoadFromFile("img/spritesheet.png")) {
+    std::cerr << "Not found spritesheet!" << std::endl;
     exit(1);
+  }
 
   Shader *vertShader = new Shader("VertexShader.vert", GL_VERTEX_SHADER);
   Shader *fragShader = new Shader("FragmentShader.frag", GL_FRAGMENT_SHADER);

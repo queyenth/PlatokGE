@@ -1,6 +1,6 @@
 #include "Renderable.h"
 
-#include <gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 Renderable::Renderable() : x(0), y(0), width(0), height(0), angle(0), positionChanged(true),
 isFlippedX(false), isFlippedY(false), isFixed(false) {

@@ -1,7 +1,7 @@
 #include "Animation.h"
 
 #include <GLFW/glfw3.h>
-#include <gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 Animation::Animation() : Renderable(), currentFrame(0), speed(0.1), startAnimation(0) {
 }

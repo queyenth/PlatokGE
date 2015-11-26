@@ -26,8 +26,11 @@ bld/
 [Oo]bj/
 out/
 
-# Visual Studo 2015 cache/options directory
+# Visual Studio 2015 cache/options directory
 .vs/
+
+# CLion project dir
+.idea/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

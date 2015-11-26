@@ -4,7 +4,7 @@
 #include <functional>
 
 #include <GL/glew.h>
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 #include "Rect.h"
 #include "Texture.h"
